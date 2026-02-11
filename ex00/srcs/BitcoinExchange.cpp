@@ -102,8 +102,8 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 
 void	BitcoinExchange::handleBtc(std::string inputName)
 {
-	std::ifstream					inputFile(inputName.c_str());
-	std::ifstream					dataFile(DATA_PATH);
+	std::ifstream	inputFile(inputName.c_str());
+	std::ifstream	dataFile(DATA_PATH);
 	
 	if (!inputFile.is_open())
 	 	throw (std::logic_error("File open fail"));

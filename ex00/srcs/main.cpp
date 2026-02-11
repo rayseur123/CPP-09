@@ -3,10 +3,6 @@
 #include <exception>
 #include <map>
 
-
-
-// To do :
-// finir le parsing du fichier data.csv
 int main(int ac, char **av)
 {
 	if (ac != 2)
