@@ -62,5 +62,12 @@ void		Rpn::handleStack(std::string str)
 		}
 		it++;
 	}
-	std::cout << stack_.top() << std::endl;
+	if (stack_.size() == 1)
+	{
+		std::cout << stack_.top() << std::endl;
+	}
+	else
+	{
+		std::cout << "Error" << std::endl;
+	}
 }
