@@ -2,10 +2,24 @@
 #define PMERGEME_HPP
 
 #include <vector>
-//#include <deque>
+#include <deque>
 
-void	mergeInsertSort(std::vector<int>& container);
+class PmergeMe
+{
+	private:
+	public:
+		static void	mergeInsertSort(std::vector<int>& container);
+		static void	mergeInsertSort(std::deque<int>& container);
 
-//void	mergeInsertSort(deque& container);
+		PmergeMe();
+		PmergeMe(PmergeMe const& toCopy);
+		~PmergeMe();
+
+		PmergeMe const&	operator=(PmergeMe const& toCopy);
+};
+
+
+
+
 
 #endif
