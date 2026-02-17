@@ -78,7 +78,7 @@ static std::vector<size_t> getInsertionOrder(size_t count)
     std::vector<size_t> jacobsthal = generateJacobsthal(count + 1);
     std::vector<bool> inserted(count, false);
     
-    for (size_t i = 0; i < jacobsthal.size(); ++i)
+    for (size_t i = 1; i < jacobsthal.size(); ++i)
     {
         size_t pos = jacobsthal[i];
         size_t prev = jacobsthal[i - 1];
@@ -99,7 +99,7 @@ static std::vector<size_t> getInsertionOrder(size_t count)
             order.push_back(i);
     }
     
-    return order;
+    return (order);
 }
 
 static void insertSmalestElements(std::vector<int>& container, 
@@ -121,10 +121,16 @@ static void insertSmalestElements(std::vector<int>& container,
             size_t index = insertionOrder[i] + 1;
             if (index < pairs.size())
             {
-                int smallerToInsert = pairs[index].second;
-                std::vector<int>::iterator position = 
-                    std::lower_bound(buff.begin(), buff.end(), smallerToInsert);
-                buff.insert(position, smallerToInsert);
+				int smallerToInsert = pairs[index].second;
+       			int largerBound     = pairs[index].first;
+
+				std::vector<int>::iterator upperBound =
+            	std::lower_bound(buff.begin(), buff.end(), largerBound);
+
+				std::vector<int>::iterator position =
+           		std::lower_bound(buff.begin(), upperBound, smallerToInsert);
+        
+        		buff.insert(position, smallerToInsert);
             }
         }
     }
@@ -230,7 +236,7 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
     std::deque<size_t> jacobsthal = generateJacobsthalDeque(count + 1);
     std::deque<bool> inserted(count, false);
     
-    for (size_t i = 0; i < jacobsthal.size(); ++i)
+    for (size_t i = 1; i < jacobsthal.size(); ++i)
     {
         size_t pos = jacobsthal[i];
         size_t prev = jacobsthal[i - 1];
@@ -251,7 +257,41 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
             order.push_back(i);
     }
     
-    return order;
+    return (order);
+}
+
+
+static std::deque<size_t> getInsertionOrderDeque(size_t count)
+{
+    if (count == 0)
+        return std::deque<size_t>();
+    
+    std::deque<size_t> order;
+    std::deque<size_t> jacobsthal = generateJacobsthalDeque(count + 1);
+    std::deque<bool> inserted(count, false);
+    
+    for (size_t i = 1; i < jacobsthal.size(); ++i)
+    {
+        size_t pos = jacobsthal[i];
+        size_t prev = jacobsthal[i - 1];
+        
+        for (size_t j = std::min(pos - 1, count - 1); j > prev && j < count; j--)
+        {
+            if (!inserted[j])
+            {
+                order.push_back(j);
+                inserted[j] = true;
+            }
+        }
+    }
+    
+    for (size_t i = 0; i < count; i++)
+    {
+        if (!inserted[i])
+            order.push_back(i);
+    }
+    
+    return (order);
 }
 
 static void insertSmalestElements(std::deque<int>& container, 
@@ -273,10 +313,16 @@ static void insertSmalestElements(std::deque<int>& container,
             size_t index = insertionOrder[i] + 1;
             if (index < pairs.size())
             {
-                int smallerToInsert = pairs[index].second;
-                std::deque<int>::iterator position = 
-                    std::lower_bound(buff.begin(), buff.end(), smallerToInsert);
-                buff.insert(position, smallerToInsert);
+				int smallerToInsert = pairs[index].second;
+       			int largerBound     = pairs[index].first;
+
+				std::deque<int>::iterator upperBound =
+            	std::lower_bound(buff.begin(), buff.end(), largerBound);
+
+				std::deque<int>::iterator position =
+           		std::lower_bound(buff.begin(), upperBound, smallerToInsert);
+        
+        		buff.insert(position, smallerToInsert);
             }
         }
     }
