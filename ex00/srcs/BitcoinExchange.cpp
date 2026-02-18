@@ -7,7 +7,7 @@
 #include <cstring>
 #include <algorithm>
 
-#define DATA_PATH "data/data.csv"
+#define DATA_PATH "data.csv"
 
 void	BitcoinExchange::display_map() const
 {
@@ -165,8 +165,15 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 		if (!handleError(sDate, sValue, fValue, tm))
 			continue;
 		it = btcMap_.upper_bound(mktime(&tm));
-		if (it-- != btcMap_.end())
+		if (it == btcMap_.begin())
+		{
 			std::cout << sDate << " => " << sValue << " = " << it->second * fValue << std::endl;
+		}
+		else
+		{
+			it--;
+			std::cout << sDate << " => " << sValue << " = " << it->second * fValue << std::endl;
+		}
 	}
 }
 

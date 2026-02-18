@@ -260,40 +260,6 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
     return (order);
 }
 
-
-static std::deque<size_t> getInsertionOrderDeque(size_t count)
-{
-    if (count == 0)
-        return std::deque<size_t>();
-    
-    std::deque<size_t> order;
-    std::deque<size_t> jacobsthal = generateJacobsthalDeque(count + 1);
-    std::deque<bool> inserted(count, false);
-    
-    for (size_t i = 1; i < jacobsthal.size(); ++i)
-    {
-        size_t pos = jacobsthal[i];
-        size_t prev = jacobsthal[i - 1];
-        
-        for (size_t j = std::min(pos - 1, count - 1); j > prev && j < count; j--)
-        {
-            if (!inserted[j])
-            {
-                order.push_back(j);
-                inserted[j] = true;
-            }
-        }
-    }
-    
-    for (size_t i = 0; i < count; i++)
-    {
-        if (!inserted[i])
-            order.push_back(i);
-    }
-    
-    return (order);
-}
-
 static void insertSmalestElements(std::deque<int>& container, 
                            std::deque<int>& largerElements,
                            std::deque<std::pair<int, int> >& pairs,
