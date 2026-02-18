@@ -47,7 +47,11 @@ void	BitcoinExchange::fillingDataMap(std::ifstream& dataFile)
 static bool	checkIsFloat(std::string sFloat)
 {
 	bool	dot = false;
-	for (size_t i = 0; i < sFloat.length(); i++)
+	size_t 	i = 0;
+	
+	if (sFloat[0] == '-')
+		i++;
+	for (size_t j = i; j < sFloat.length(); j++)
 	{
 		if (!isdigit(sFloat[i]))
 		{
@@ -60,18 +64,48 @@ static bool	checkIsFloat(std::string sFloat)
 	return (true);
 }
 
+static bool isLeapYear(int year)
+{
+	return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+}
+
 static bool	checkDate(std::string sDate)
 {
 	for (size_t i = 0; i < sDate.length(); i++)
 	{
-		if (!isdigit(sDate[i]) && (sDate[i] != '-'))
-				return (false);
+		if (!isdigit(sDate[i]) && sDate[i] != '-')
+			return false;
 	}
-	if (*(--sDate.end()) == '-')
-		return (false);
-	int	index = sDate.rfind("-") + 1;
-	if (atoi(sDate.c_str() + index) < 0 || atoi(sDate.c_str() + index) > 31)
-		return (false);
+
+	if (sDate.size() != 10 || sDate[4] != '-' || sDate[7] != '-')
+		return false;
+
+	int year = atoi(sDate.substr(0, 4).c_str());
+	int month = atoi(sDate.substr(5, 2).c_str());
+	int day = atoi(sDate.substr(8, 2).c_str());
+
+	if (month < 1 || month > 12)
+		return false;
+
+	int daysInMonth;
+
+	if (month == 2)
+	{
+		if (isLeapYear(year))
+			daysInMonth = 29;
+		else
+			daysInMonth = 28;
+	}
+	else if (month == 4 || month == 6 || month == 9 || month == 11)
+	{
+		daysInMonth = 30;
+	}
+	else
+	{
+		daysInMonth = 31;
+	}
+	if (day < 1 || day > daysInMonth)
+		return false;
 	return (true);
 }
 
