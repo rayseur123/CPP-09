@@ -73,25 +73,25 @@ static bool	handleError(std::string sDate, std::string value, float& fValue, str
 	if (!strptime(sDate.c_str(), "%Y-%m-%d", &tm) || !checkDay(sDate))
 	{
 		std::cout << "Error: Invalid date format." << std::endl;
-		return (0);
+		return (false);
 	}
 	else if (!sscanf(value.c_str(), "%f", &fValue) || !checkIsFloat(value))
 	{
 		std::cout << "Error: Invalid float value." << std::endl;
-		return (0);
+		return (false);
 	}
 	else if (fValue < 0.0f)
 	{
 		std::cout << "Error: Not a positive number." << std::endl;
-		return (0);
+		return (false);
 	}
 	else if (fValue > 1000.0f)
 	{
 		std::cout << "Error: too large a number." << std::endl;
-		return (0);
+		return (false);
 	}
 	std::cout << tm.tm_mday << std::endl;
-	return (1);
+	return (true);
 }
 
 void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
