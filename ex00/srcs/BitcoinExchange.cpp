@@ -60,9 +60,17 @@ static bool	checkIsFloat(std::string sFloat)
 	return (true);
 }
 
+static bool	checkDay(std::string sDate)
+{
+	int	index = sDate.rfind("-") + 1;
+	if (atoi(sDate.c_str() + index) < 0 || atoi(sDate.c_str() + index) > 31)
+		return (false);
+	return (true);
+}
+
 static bool	handleError(std::string sDate, std::string value, float& fValue, struct tm& tm)
 {
-	if (!strptime(sDate.c_str(), "%Y-%m-%d", &tm))
+	if (!strptime(sDate.c_str(), "%Y-%m-%d", &tm) || !checkDay(sDate))
 	{
 		std::cout << "Error: Invalid date format." << std::endl;
 		return (0);
@@ -82,6 +90,7 @@ static bool	handleError(std::string sDate, std::string value, float& fValue, str
 		std::cout << "Error: too large a number." << std::endl;
 		return (0);
 	}
+	std::cout << tm.tm_mday << std::endl;
 	return (1);
 }
 
