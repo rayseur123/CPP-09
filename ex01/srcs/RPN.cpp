@@ -24,35 +24,31 @@ Rpn const&	Rpn::operator=(Rpn const& toCopy)
 
 void		Rpn::handleStack(std::string str)
 {
-	std::string::iterator	it = str.begin();
-	std::string::iterator	end = str.end();
-	int						buff;
-
-	while (it != end)
+	for (std::string::iterator it = str.begin(); it != str.end(); it++)
 	{
 		if (isdigit(*it))
 		{
 			stack_.push(*it - '0');
 		}
-		else if (*it == '+' || *it == '-' || *it == '/' || *it == '*')
+		else if ((*it == '+' || *it == '-' || *it == '/' || *it == '*') && stack_.size() > 1)
 		{
-			buff = stack_.top();
+			int buff = stack_.top();
 			stack_.pop();
 			if (*it == '+')
 			{
-				stack_.push(stack_.top() + buff);
+				stack_.top() += buff;
 			}
 			else if (*it == '-')
 			{
-				stack_.push(stack_.top() - buff);
+				stack_.top() -= buff;
 			}
 			else if (*it == '/')
 			{
-				stack_.push(stack_.top() / buff);
+				stack_.top() /= buff;
 			}
 			else if (*it == '*')
 			{
-				stack_.push(stack_.top() * buff);
+				stack_.top() *= buff;
 			}
 		}
 		else if (*it != ' ')
@@ -60,7 +56,6 @@ void		Rpn::handleStack(std::string str)
 			std::cout << "Error" << std::endl;
 			return ;
 		}
-		it++;
 	}
 	if (stack_.size() == 1)
 	{
