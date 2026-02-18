@@ -44,6 +44,22 @@ void	BitcoinExchange::fillingDataMap(std::ifstream& dataFile)
 	}
 }
 
+static bool	checkIsFloat(std::string sFloat)
+{
+	bool	dot = false;
+	for (size_t i = 0; i < sFloat.length(); i++)
+	{
+		if (!isdigit(sFloat[i]))
+		{
+			if (sFloat[i] == '.' && !dot)
+				dot = true;
+			else
+				return (false);
+		}
+	}
+	return (true);
+}
+
 static bool	handleError(std::string sDate, std::string value, float& fValue, struct tm& tm)
 {
 	if (!strptime(sDate.c_str(), "%Y-%m-%d", &tm))
@@ -51,7 +67,7 @@ static bool	handleError(std::string sDate, std::string value, float& fValue, str
 		std::cout << "Error: Invalid date format." << std::endl;
 		return (0);
 	}
-	else if (!sscanf(value.c_str(), "%f", &fValue))
+	else if (!sscanf(value.c_str(), "%f", &fValue) || !checkIsFloat(value))
 	{
 		std::cout << "Error: Invalid float value." << std::endl;
 		return (0);
@@ -73,7 +89,7 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 {
 	std::string								line;
 	std::string								sDate;
-	std::string								value;
+	std::string								sValue;
 	std::string::size_type					index;
 	struct tm								tm = {};
 	float									fValue;
@@ -84,19 +100,24 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 	{
 		std::getline(inputFile, line);
 		index = line.find(" | ");
-		sDate = line.substr(0, index);
-		if (line.length() >= index + 3)
-			value = line.substr(index + 3);
-		else
+		if (index == line.npos)
 		{
-			std::cout << "Error: Invalid date format." << std::endl;
+			std::cout << "Error: Invalid line." << std::endl;
 			continue;
 		}
-		if (!handleError(sDate, value, fValue, tm))
+		sDate = line.substr(0, index);
+		if (line.length() > index + 3)
+			sValue = line.substr(index + 3);
+		else
+		{
+			std::cout << "Error: Invalid line format." << std::endl;
+			continue;
+		}
+		if (!handleError(sDate, sValue, fValue, tm))
 			continue;
 		it = btcMap_.upper_bound(mktime(&tm));
 		if (it-- != btcMap_.end())
-			std::cout << sDate << " => " << value << " = " << it->second * fValue << std::endl;
+			std::cout << sDate << " => " << sValue << " = " << it->second * fValue << std::endl;
 	}
 }
 
