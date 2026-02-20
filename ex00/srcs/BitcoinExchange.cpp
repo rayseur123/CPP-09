@@ -145,7 +145,7 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 	std::map<std::time_t, float>::iterator	it;
 
 	std::getline(inputFile, line);
-	while (!inputFile.eof())
+	while (inputFile.good())
 	{
 		std::getline(inputFile, line);
 		index = line.find(" | ");
@@ -182,9 +182,9 @@ void	BitcoinExchange::handleBtc(std::string inputName)
 	std::ifstream	inputFile(inputName.c_str());
 	std::ifstream	dataFile(DATA_PATH);
 	
-	if (!inputFile.is_open())
+	if (!inputFile.is_open() || inputFile.bad() || inputFile.fail())
 	 	throw (std::logic_error("File open fail"));
-	if (!dataFile.is_open())
+	if (!dataFile.is_open() || dataFile.bad() || dataFile.fail())
 		throw (std::logic_error("File open fail"));
 	this->fillingDataMap(dataFile);
 	this->getAmountBtc(inputFile);
