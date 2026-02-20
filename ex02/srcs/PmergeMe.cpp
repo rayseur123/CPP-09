@@ -83,11 +83,14 @@ static std::vector<size_t> getInsertionOrder(size_t count)
         size_t pos = jacobsthal[i];
         size_t prev = jacobsthal[i - 1];
         
-        for (size_t j = std::min(pos - 1, count - 1); j > prev && j < count; j--)
+        int jStart = (int)std::min(pos - 1, count - 1);
+        int jEnd   = (int)prev;
+
+        for (int j = jStart; j > jEnd && j >= 0 && (size_t)j < count; j--)
         {
             if (!inserted[j])
             {
-                order.push_back(j);
+                order.push_back((size_t)j);
                 inserted[j] = true;
             }
         }
@@ -240,12 +243,15 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
     {
         size_t pos = jacobsthal[i];
         size_t prev = jacobsthal[i - 1];
-        
-        for (size_t j = std::min(pos - 1, count - 1); j > prev && j < count; j--)
+
+        int jStart = (int)std::min(pos - 1, count - 1);
+        int jEnd   = (int)prev;
+
+        for (int j = jStart; j > jEnd && j >= 0 && (size_t)j < count; j--)
         {
             if (!inserted[j])
             {
-                order.push_back(j);
+                order.push_back((size_t)j);
                 inserted[j] = true;
             }
         }
