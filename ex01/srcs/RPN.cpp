@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <iostream>
+#include <exception>
 
 Rpn::Rpn()
 {}
@@ -44,6 +45,10 @@ void		Rpn::handleStack(std::string str)
 			}
 			else if (*it == '/')
 			{
+				if (buff == 0)
+				{
+					throw (std::logic_error("Division by 0 is forbiden"));
+				}
 				stack_.top() /= buff;
 			}
 			else if (*it == '*')
