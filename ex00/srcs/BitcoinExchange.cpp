@@ -74,18 +74,18 @@ static bool	checkDate(std::string sDate)
 	for (size_t i = 0; i < sDate.length(); i++)
 	{
 		if (!isdigit(sDate[i]) && sDate[i] != '-')
-			return false;
+			return (false);
 	}
 
 	if (sDate.size() != 10 || sDate[4] != '-' || sDate[7] != '-')
-		return false;
+		return (false);
 
 	int year = atoi(sDate.substr(0, 4).c_str());
 	int month = atoi(sDate.substr(5, 2).c_str());
 	int day = atoi(sDate.substr(8, 2).c_str());
 
 	if (month < 1 || month > 12)
-		return false;
+		return (false);
 
 	int daysInMonth;
 
@@ -105,7 +105,7 @@ static bool	checkDate(std::string sDate)
 		daysInMonth = 31;
 	}
 	if (day < 1 || day > daysInMonth)
-		return false;
+		return (false);
 	return (true);
 }
 
@@ -165,14 +165,14 @@ void	BitcoinExchange::getAmountBtc(std::ifstream& inputFile)
 		if (!handleError(sDate, sValue, fValue, tm))
 			continue;
 		it = btcMap_.upper_bound(mktime(&tm));
-		if (it == btcMap_.begin())
+		if (it != btcMap_.begin())
 		{
+			it--;
 			std::cout << sDate << " => " << sValue << " = " << it->second * fValue << std::endl;
 		}
 		else
 		{
-			it--;
-			std::cout << sDate << " => " << sValue << " = " << it->second * fValue << std::endl;
+			throw (std::logic_error("date error"));
 		}
 	}
 }
