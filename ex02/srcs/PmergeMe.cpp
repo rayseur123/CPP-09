@@ -9,16 +9,16 @@
 static std::vector<std::pair<int, int> > doPairs(std::vector<int>& container)
 {
     std::vector<std::pair<int, int> > ret;
-    
+
     for (size_t i = 0; i + 1 < container.size(); i += 2)
     {
         int first = container[i];
         int second = container[i + 1];
-        
+
         if (first < second)
             ret.push_back(std::make_pair(second, first));
         else
-            ret.push_back(std::make_pair(first, second));
+           ret.push_back(std::make_pair(first, second));
     }
     return (ret);
 }
@@ -36,7 +36,7 @@ static void reorderedPairs(std::vector<std::pair<int, int> >& pairs,
 {
     std::vector<std::pair<int, int> > sortedPairs;
     std::vector<bool> used(pairs.size(), false);
-    
+
     for (size_t i = 0; i < largerElements.size(); i++)
     {
         for (size_t j = 0; j < pairs.size(); j++)
@@ -57,7 +57,7 @@ static std::vector<size_t> generateJacobsthal(size_t maxSize)
     std::vector<size_t> jacobsthal;
     jacobsthal.push_back(0);
     jacobsthal.push_back(1);
-    
+
     while (true)
     {
         size_t next = jacobsthal[jacobsthal.size() - 1] + 
@@ -73,11 +73,11 @@ static std::vector<size_t> getInsertionOrder(size_t count)
 {
     if (count == 0)
         return std::vector<size_t>();
-    
+
     std::vector<size_t> order;
     std::vector<size_t> jacobsthal = generateJacobsthal(count + 1);
     std::vector<bool> inserted(count, false);
-    
+
     for (size_t i = 1; i < jacobsthal.size(); ++i)
     {
         size_t pos = jacobsthal[i];
@@ -92,13 +92,13 @@ static std::vector<size_t> getInsertionOrder(size_t count)
             }
         }
     }
-    
+
     for (size_t i = 0; i < count; i++)
     {
         if (!inserted[i])
             order.push_back(i);
     }
-    
+
     return (order);
 }
 
@@ -111,11 +111,11 @@ static void insertSmalestElements(std::vector<int>& container,
 
     if (!pairs.empty())
         buff.insert(buff.begin(), pairs[0].second);
-    
+
     if (pairs.size() > 1)
     {
         std::vector<size_t> insertionOrder = getInsertionOrder(pairs.size() - 1);
-        
+   
         for (size_t i = 0; i < insertionOrder.size(); i++)
         {
             size_t index = insertionOrder[i] + 1;
@@ -129,19 +129,19 @@ static void insertSmalestElements(std::vector<int>& container,
 
 				std::vector<int>::iterator position =
            		std::lower_bound(buff.begin(), upperBound, smallerToInsert);
-        
+
         		buff.insert(position, smallerToInsert);
             }
         }
     }
-    
+
     if (odd != -1)
     {
         std::vector<int>::iterator position = 
             std::lower_bound(buff.begin(), buff.end(), odd);
         buff.insert(position, odd);
     }
-    
+
     container = buff;
 }
 
@@ -149,14 +149,14 @@ void PmergeMe::mergeInsertSort(std::vector<int>& container)
 {
     if (container.size() <= 1)
         return;
-    
+
     std::vector<std::pair<int, int> > pairs = doPairs(container);
     std::vector<int> largerElements = buildBigTab(pairs);
     int odd = -1;
-    
+
     if (container.size() % 2 == 1)
         odd = container[container.size() - 1];
-    
+
     mergeInsertSort(largerElements);
     reorderedPairs(pairs, largerElements);
     insertSmalestElements(container, largerElements, pairs, odd);
@@ -167,12 +167,12 @@ void PmergeMe::mergeInsertSort(std::vector<int>& container)
 static std::deque<std::pair<int, int> > doPairs(std::deque<int>& container)
 {
     std::deque<std::pair<int, int> > ret;
-    
+
     for (size_t i = 0; i + 1 < container.size(); i += 2)
     {
         int first = container[i];
         int second = container[i + 1];
-        
+
         if (first < second)
             ret.push_back(std::make_pair(second, first));
         else
@@ -194,7 +194,7 @@ static void reorderedPairs(std::deque<std::pair<int, int> >& pairs,
 {
     std::deque<std::pair<int, int> > sortedPairs;
     std::deque<bool> used(pairs.size(), false);
-    
+
     for (size_t i = 0; i < largerElements.size(); i++)
     {
         for (size_t j = 0; j < pairs.size(); j++)
@@ -215,7 +215,7 @@ static std::deque<size_t> generateJacobsthalDeque(size_t maxSize)
     std::deque<size_t> jacobsthal;
     jacobsthal.push_back(0);
     jacobsthal.push_back(1);
-    
+
     while (true)
     {
         size_t next = jacobsthal[jacobsthal.size() - 1] + 
@@ -231,11 +231,11 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
 {
     if (count == 0)
         return std::deque<size_t>();
-    
+
     std::deque<size_t> order;
     std::deque<size_t> jacobsthal = generateJacobsthalDeque(count + 1);
     std::deque<bool> inserted(count, false);
-    
+
     for (size_t i = 1; i < jacobsthal.size(); ++i)
     {
         size_t pos = jacobsthal[i];
@@ -250,13 +250,13 @@ static std::deque<size_t> getInsertionOrderDeque(size_t count)
             }
         }
     }
-    
+
     for (size_t i = 0; i < count; i++)
     {
         if (!inserted[i])
             order.push_back(i);
     }
-    
+
     return (order);
 }
 
@@ -269,7 +269,7 @@ static void insertSmalestElements(std::deque<int>& container,
 
     if (!pairs.empty())
         buff.insert(buff.begin(), pairs[0].second);
-    
+
     if (pairs.size() > 1)
     {
         std::deque<size_t> insertionOrder = getInsertionOrderDeque(pairs.size() - 1);
